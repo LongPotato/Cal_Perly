@@ -1,0 +1,46 @@
+body {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.header,
+.footer {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+.header {
+  padding-bottom: 1rem;
+  border-bottom: .05rem solid #e5e5e5;
+}
+
+.header h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 3rem;
+}
+
+.footer {
+  padding-top: 1.5rem;
+  color: #777;
+  border-top: .05rem solid #e5e5e5;
+}
+
+@media (min-width: 60em) {
+  .container {
+    max-width: 60rem;
+  }
+}
+
+.container-narrow > hr {
+  margin: 2rem 0;
+}
+
+.nav .active {
+   color: #fff !important;
+   background: #006f3b !important;
+}
+
+.nav-link {
+  color: #006f3b !important;
+}

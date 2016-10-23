@@ -1,12 +1,32 @@
 #!/usr/bin/env perl
 use Mojolicious::Lite;
+use DBI;
+use Mojo::Log;
+use Mojo::JSON qw(decode_json encode_json);
 
-# Documentation browser under "/perldoc"
-plugin 'PODRenderer';
+# Log to STDERR
+my $log = Mojo::Log->new;
+# Connect to database
+my $dbh = DBI->connect("dbi:SQLite:cp_db","","") or die "DB connection failed";
 
 get '/' => sub {
   my $c = shift;
   $c->render(template => 'index');
+};
+
+get '/courses' => sub {
+  my $c = shift;
+  my $sth = $dbh->prepare('SELECT * FROM Courses');
+  $sth->execute;
+  my $arr = $sth->fetchall_arrayref;
+  my @courses = ();
+
+  foreach my $row (@$arr) {
+    push(@courses, {title => $row->[1], name => $row->[2], type => $row->[3]});
+  }
+
+  my $result = encode_json({message => 'getCourses', courses => \@courses});
+  $c->render(json => $result);
 };
 
 app->start;
