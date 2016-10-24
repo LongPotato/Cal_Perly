@@ -17,10 +17,10 @@
         <nav>
           <ul class="nav nav-pills float-xs-right">
             <li class="nav-item">
-              <a class="nav-link active" href="#">Schedule</a>
+              <a ng-class="{active: !parkingPage}" ng-click="parkingPage = false; selectPage = true" class="nav-link" href="">Schedule</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Parking</a>
+              <a ng-class="{active: parkingPage}" ng-click="parkingPage = true; selectPage = false" class="nav-link" href="">Parking</a>
             </li>
           </ul>
         </nav>
@@ -65,6 +65,9 @@
             <strong>Done</strong> <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </button>
         </div>
+      </div>
+
+      <div class="row" ng-show="parkingPage">
       </div>
 
       <footer class="footer">

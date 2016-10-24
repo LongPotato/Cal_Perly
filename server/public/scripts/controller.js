@@ -1,9 +1,11 @@
 app.controller('Controller', function($scope, $http, $timeout) {
 
+  $scope.selectPage = false;
+  $scope.parkingPage = false;
+  $scope.loading = true;
+
   $scope.courses = [];
   var selectedCourses = [];
-  $scope.selectPage = false;
-  $scope.loading = true;
 
   $http.get('/courses')
   .then(function(response) {
