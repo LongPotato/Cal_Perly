@@ -15,7 +15,7 @@ body {
 
 .header {
   padding-bottom: 1rem;
-  border-bottom: .05rem solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .header h2 {
@@ -25,9 +25,10 @@ body {
 }
 
 .footer {
-  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
   color: #777;
-  border-top: .05rem solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
 }
 
 @media (min-width: 60em) {
