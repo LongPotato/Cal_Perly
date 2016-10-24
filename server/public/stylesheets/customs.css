@@ -1,3 +1,7 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
 body {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -37,10 +41,21 @@ body {
 }
 
 .nav .active {
-   color: #fff !important;
-   background: #006f3b !important;
+  color: #fff !important;
+  background: #006f3b !important;
 }
 
 .nav-link {
   color: #006f3b !important;
+}
+
+#loading {
+  padding-top: 200px;
+  height:500px;
+  overflow:scroll;
+}
+
+#logo {
+  color: inherit !important;
+  text-decoration: none;
 }

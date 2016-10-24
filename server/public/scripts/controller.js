@@ -1,12 +1,15 @@
-app.controller('Controller', function($scope, $http) {
+app.controller('Controller', function($scope, $http, $timeout) {
 
   $scope.courses = [];
   var selectedCourses = [];
+  $scope.selectPage = false;
+  $scope.loading = true;
 
   $http.get('/courses')
   .then(function(response) {
     $scope.courses = JSON.parse(response.data)["courses"];
-    console.log($scope.courses);
+    $scope.loading = false;
+    $scope.selectPage = true;
   });
 
   $scope.selectCourse = function(course) {
@@ -25,8 +28,25 @@ app.controller('Controller', function($scope, $http) {
     } else {
       selectedCourses.push(course);
     }
+  }
 
-    console.log(selectedCourses);
+  $scope.getSchedule = function() {
+    $scope.fadeOut = true;
+
+    $timeout(function() {
+      $scope.loading = true;
+    }, 500);
+
+    $timeout(function() {
+      $scope.selectPage = false;
+      var data = JSON.stringify(selectedCourses);
+
+      $http.post('/schedule', data)
+      .then(function(response) {
+        console.log(response);
+        //$scope.selectPage = false;
+      });
+    }, 1000);
   }
 
 });

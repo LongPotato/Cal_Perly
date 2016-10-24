@@ -29,4 +29,13 @@ get '/courses' => sub {
   $c->render(json => $result);
 };
 
+post '/schedule' => sub {
+  my $c = shift;
+  my @completed_courses = decode_json($c->req->body);
+
+  #TODO: Call parser function here
+
+  $c->render(json => $c->req->body);
+};
+
 app->start;
