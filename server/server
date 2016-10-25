@@ -1,8 +1,11 @@
 #!/usr/bin/env perl
+use lib '../modules';
+use strict;
 use Mojolicious::Lite;
 use DBI;
 use Mojo::Log;
 use Mojo::JSON qw(decode_json encode_json);
+use SearchTweet;
 
 # Log to STDERR
 my $log = Mojo::Log->new;
@@ -36,6 +39,13 @@ post '/schedule' => sub {
   #TODO: Call parser function here
 
   $c->render(json => $c->req->body);
+};
+
+websocket '/news' => sub {
+  my $self = shift;
+  my $result = SearchTweet::get_tweets('calpolypomona');
+
+  $self->send(encode_json($result));
 };
 
 app->start;

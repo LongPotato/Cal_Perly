@@ -1,11 +1,18 @@
 app.controller('Controller', function($scope, $http, $timeout) {
+  var ws = new WebSocket(SOCKET);
 
   $scope.selectPage = false;
-  $scope.parkingPage = false;
+  $scope.newsPage = false;
   $scope.loading = true;
 
   $scope.courses = [];
   var selectedCourses = [];
+
+  ws.onmessage = function (msg) {
+    console.log(msg);
+    var res = JSON.parse(msg.data);
+    console.log(res);
+  };
 
   $http.get('/courses')
   .then(function(response) {
