@@ -1,4 +1,4 @@
-app.controller('Controller', function($scope, $http, $timeout) {
+app.controller('Controller', function($scope, $http, $timeout, $interval) {
   var ws = new WebSocket(SOCKET);
 
   $scope.selectPage = false;
@@ -8,10 +8,24 @@ app.controller('Controller', function($scope, $http, $timeout) {
   $scope.courses = [];
   var selectedCourses = [];
 
+  ws.onopen = function () {
+    ws.send('getTweets');
+  };
+
+  ws.onclose = function () {
+    console.log('wake');
+    ws.send('wake');
+  };
+
   ws.onmessage = function (msg) {
     $scope.tweets = JSON.parse(msg.data)["statuses"];
     console.log($scope.tweets);
   };
+
+  $interval(function() {
+    console.log('get tweets');
+    ws.send('getTweets');
+  }, 30000);
 
   $http.get('/courses')
   .then(function(response) {

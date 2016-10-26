@@ -43,9 +43,17 @@ post '/schedule' => sub {
 
 websocket '/news' => sub {
   my $self = shift;
-  my $result = SearchTweet::get_tweets('calpolypomona');
 
-  $self->send(encode_json($result));
+  $self = $self->inactivity_timeout(3600);
+
+  $self->on(message => sub {
+    my ($self, $message) = @_;
+    if ($message eq 'getTweets') {
+      $log->debug("Getting tweets and sending data to socket");
+      my $result = SearchTweet::get_tweets('calpolypomona');
+      $self->send(encode_json($result));
+    }
+  });
 };
 
 app->start;
