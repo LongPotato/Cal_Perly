@@ -76,3 +76,8 @@ body {
     width: 30%;
     margin: 15px;
 }
+
+.tweet-link {
+  color: black !important;
+  text-decoration: none !important;
+}
