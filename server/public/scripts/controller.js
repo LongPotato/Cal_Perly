@@ -9,9 +9,8 @@ app.controller('Controller', function($scope, $http, $timeout) {
   var selectedCourses = [];
 
   ws.onmessage = function (msg) {
-    console.log(msg);
-    var res = JSON.parse(msg.data);
-    console.log(res);
+    $scope.tweets = JSON.parse(msg.data)["statuses"];
+    console.log($scope.tweets);
   };
 
   $http.get('/courses')
