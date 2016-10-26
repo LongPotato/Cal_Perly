@@ -36,7 +36,7 @@ app.controller('Controller', function($scope, $http, $timeout) {
     } else {
       selectedCourses.push(course);
     }
-  }
+  };
 
   $scope.getSchedule = function() {
     $scope.fadeOut = true;
@@ -55,6 +55,6 @@ app.controller('Controller', function($scope, $http, $timeout) {
         //$scope.selectPage = false;
       });
     }, 1000);
-  }
+  };
 
 });

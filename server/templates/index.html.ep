@@ -67,17 +67,22 @@
         </div>
       </div>
 
-      <div class="row" ng-show="newsPage">
+      <div class="row animated" ng-show="newsPage" ng-class="{fadeIn: newsPage == true}" ng-cloak>
         <div deckgrid class="deckgrid" source="tweets">
-          <div class="card card-block">
-            <blockquote class="card-blockquote">
-              <p>{{card.text}}</p>
-              <footer>
-                <small class="text-muted">
-                  {{card.user.name}}
-                </small>
-              </footer>
-            </blockquote>
+          <div class="card">
+            <img ng-show="card.entities.hasOwnProperty('media')"
+              class="card-img-top img-fluid" ng-src="{{card.entities.media[0].media_url}}"
+              alt="image">
+            <div class="card-block">
+              <blockquote class="card-blockquote">
+                <p>{{card.text}}</p>
+                <footer>
+                  <small class="text-muted">
+                    {{card.user.name}}
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
           </div>
         </div>
 
