@@ -22,7 +22,6 @@ sub filter_required_courses {
   foreach my $key (keys %$schedule) {
     my $c_number = $schedule->{$key}->{'Course'};
     if (exists($catalog->{$c_number})) {
-      $log->debug('true haha');
       $schedule->{$key}->{'Type'} = $catalog->{$c_number};
     } else {
       # If the course is not required, remove it from schedule

@@ -17,55 +17,103 @@
         <nav>
           <ul class="nav nav-pills float-xs-right">
             <li class="nav-item">
-              <a ng-class="{active: !newsPage}" ng-click="newsPage = false; loading = false; selectPage = true" class="nav-link" href="">Schedule</a>
+              <a ng-class="{active: !newsPage}" ng-click="newsPage = false; mainPage = true" class="nav-link" href="">Schedule</a>
             </li>
             <li class="nav-item">
-              <a ng-class="{active: newsPage}" ng-click="newsPage = true; loading = false; selectPage = false" class="nav-link" href="">News</a>
+              <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false" class="nav-link" href="">News</a>
             </li>
           </ul>
         </nav>
         <h2 style="color: #006f3b"><a href="/" id="logo">Cal Perly</a></h2>
       </div>
 
-      <div class="row" id="loading" ng-show="loading" ng-cloak>
-          <div class="col-md-12 text-xs-center">
-            <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="color: #006f3b"></i>
-          </div>
-      </div>
-
-      <div class="row animated" ng-show="selectPage" ng-class="{fadeOut: fadeOut == true}" ng-cloak>
-        <div ng-class="{fadeIn: selectPage == true}" class="col-md-12 animated">
-          <p class="text-muted" style="margin-bottom: 1.5rem">Select your completed courses:</p>
-        </div>
-
-        <div ng-class="{fadeIn: selectPage == true}" class="col-md-6 animated">
-          <div class="card">
-            <p class="lead card-header">Required Core</p>
-            <div class="card-block">
-              <label ng-repeat="course in courses | filter: {type: 'core'}">
-                <p><input type="checkbox" value="{{course.title}}" ng-click="selectCourse(course)"> <strong>{{course.title}}</strong> - {{course.name}}</p>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div ng-class="{fadeIn: selectPage == true}" class="col-md-6 animated">
-          <div class="card">
-            <p class="lead card-header">Elective Core</p>
-            <div class="card-block">
-              <label ng-repeat="course in courses | filter: {type: 'elec'}">
-                <p><input type="checkbox" value="{{course.title}}" ng-click="selectCourse(course)"> <strong>{{course.title}}</strong> - {{course.name}}</p>
-              </label>
-            </div>
-          </div>
-        </div>
-
+      <div class="row" ng-show="mainPage" ng-cloak>
         <div class="col-md-12">
-          <button type="button" class="btn btn-outline-primary btn-lg btn-block" ng-click="getSchedule()">
-            <strong>Done</strong> <i class="fa fa-arrow-right" aria-hidden="true"></i>
-          </button>
+
+        <div class="row" id="loading" ng-show="loading" ng-cloak>
+            <div class="col-md-12 text-xs-center">
+              <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw" style="color: #006f3b"></i>
+            </div>
         </div>
+
+        <div class="row animated" ng-show="selectPage" ng-class="{fadeOut: fadeOut == true}" ng-cloak>
+          <div ng-class="{fadeIn: selectPage == true}" class="col-md-12 animated">
+            <p class="text-muted" style="margin-bottom: 1.5rem">Select your completed courses:</p>
+          </div>
+
+          <div ng-class="{fadeIn: selectPage == true}" class="col-md-6 animated">
+            <div class="card">
+              <p class="lead card-header">Required Core</p>
+              <div class="card-block">
+                <label ng-repeat="course in courses | filter: {type: 'core'}">
+                  <p><input type="checkbox" value="{{course.title}}" ng-click="selectCourse(course)"> <strong>{{course.title}}</strong> - {{course.name}}</p>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div ng-class="{fadeIn: selectPage == true}" class="col-md-6 animated">
+            <div class="card">
+              <p class="lead card-header">Elective Core</p>
+              <div class="card-block">
+                <label ng-repeat="course in courses | filter: {type: 'elec'}">
+                  <p><input type="checkbox" value="{{course.title}}" ng-click="selectCourse(course)"> <strong>{{course.title}}</strong> - {{course.name}}</p>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" ng-click="getSchedule()">
+              <strong>Done</strong> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row animated" ng-show="schedulePage" ng-class="{fadeIn: fadeIn == true}" ng-cloak>
+          <div class="col-md-12">
+            <p class="text-muted" style="margin-bottom: 1.5rem">Showing classes for Winter 2017:</p>
+          </div>
+
+          <div class="col-md-12">
+            <div ng-repeat="course in suggests" class="card card-outline-secondary suggest-card">
+              <div class="card-block">
+                <h5 class="card-title">{{course[0]['Course']}} - {{course[0]['Title']}}</h5>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Instructor</th>
+                        <th>Room</th>
+                        <th>Class Nbr</th>
+                        <th>Capacity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="index in course">
+                        <td>{{index['Time']}}</td>
+                        <td>{{index['Instructor']}}</td>
+                        <td>{{index['Building/Room']}}</td>
+                        <td>{{index['Class Nbr']}}</td>
+                        <td>{{index['Capacity']}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" ng-click="searchAgain()">
+              <i class="fa fa-search" aria-hidden="true"></i> <strong>Search again</strong>
+            </button>
+          </div>
+        </div>
+
       </div>
+      </div> <!-- Main page -->
 
       <div class="row animated" ng-show="newsPage" ng-class="{zoomInUp: newsPage == true}" ng-cloak>
         <div deckgrid class="deckgrid" source="tweets">
@@ -87,18 +135,18 @@
             </a>
           </div>
         </div>
-
       </div>
 
-      <footer class="footer">
-        <p>&copy; CS408 - 2016 </p>
-      </footer>
-
+      <div class="row">
+        <footer class="footer">
+          <p>&copy; CS408 - 2016 </p>
+        </footer>
+      </div>
     </div> <!--Container-->
   </body>
 
   <script>var SOCKET = '<%= url_for('news')->to_abs %>'</script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
   <script type="text/javascript" src="/scripts/angular-deckgrid.js"></script>

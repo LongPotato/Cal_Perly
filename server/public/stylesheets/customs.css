@@ -81,3 +81,7 @@ body {
   color: black !important;
   text-decoration: none !important;
 }
+
+.suggest-card {
+  margin-bottom: 20px;
+}

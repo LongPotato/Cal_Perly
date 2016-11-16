@@ -1,11 +1,16 @@
 app.controller('Controller', function($scope, $http, $timeout, $interval) {
-  var ws = new WebSocket(SOCKET);
-
+  $scope.mainPage = true;
   $scope.selectPage = false;
+  $scope.schedulePage = false;
   $scope.newsPage = false;
   $scope.loading = true;
+  $scope.fadeIn = false;
+  $scope.fadeOut = false;
 
   $scope.courses = [];
+  $scope.suggests = {};
+
+  var ws = new WebSocket(SOCKET);
   var selectedCourses = [];
 
   ws.onopen = function () {
@@ -29,6 +34,7 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
   .then(function(response) {
     $scope.courses = JSON.parse(response.data)["courses"];
     $scope.loading = false;
+    $scope.mainPage = true;
     $scope.selectPage = true;
   });
 
@@ -51,6 +57,7 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
   };
 
   $scope.getSchedule = function() {
+    $scope.suggests = {};
     $scope.fadeOut = true;
 
     $timeout(function() {
@@ -63,10 +70,28 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
 
       $http.post('/schedule', data)
       .then(function(response) {
-        console.log(response.data);
-        //$scope.selectPage = false;
+        var schedule = response.data;
+
+        for (var section in schedule) {
+          if ($scope.suggests[schedule[section]['Course']] == null) {
+            $scope.suggests[schedule[section]['Course']] = [];
+          }
+          $scope.suggests[schedule[section]['Course']].push(schedule[section]);
+        }
+
+        $scope.loading = false;
+        $scope.schedulePage = true;
+        $scope.fadeIn = true;
       });
     }, 1000);
+  };
+
+  $scope.searchAgain = function () {
+    $scope.fadeOut = false;
+    $scope.loading = false;
+    $scope.schedulePage = false;
+    $scope.mainPage = true;
+    $scope.selectPage = true;
   };
 
 });
