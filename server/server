@@ -7,13 +7,26 @@ use Mojo::Log;
 use Mojo::JSON qw(decode_json encode_json);
 use SearchTweet;
 use CompareSch;
+use ApplyRules;
 
 # Log to STDERR
 my $log = Mojo::Log->new;
 # Connect to database
 my $dbh = DBI->connect("dbi:SQLite:cp_db","","") or die "DB connection failed";
 
+# Get schedule from catalog
 my $scheduleInfo = Schedule::getSchedule();
+
+# Get required coursed from the database
+my $sth = $dbh->prepare('SELECT * FROM Courses');
+$sth->execute;
+my $arr = $sth->fetchall_arrayref;
+my @courses = ();
+
+foreach my $row (@$arr) {
+  push(@courses, {title => $row->[1], name => $row->[2], type => $row->[3]});
+}
+
 get '/' => sub {
   my $c = shift;
   $c->render(template => 'index');
@@ -21,14 +34,6 @@ get '/' => sub {
 
 get '/courses' => sub {
   my $c = shift;
-  my $sth = $dbh->prepare('SELECT * FROM Courses');
-  $sth->execute;
-  my $arr = $sth->fetchall_arrayref;
-  my @courses = ();
-
-  foreach my $row (@$arr) {
-    push(@courses, {title => $row->[1], name => $row->[2], type => $row->[3]});
-  }
 
   my $result = encode_json({message => 'getCourses', courses => \@courses});
   $c->render(json => $result);
@@ -37,12 +42,11 @@ get '/courses' => sub {
 post '/schedule' => sub {
   my $c = shift;
   my @completed_courses = decode_json($c->req->body);
-
-  #TODO: Call parser function here
-
   my $schedule = CompareSch::compareSchedule(\@completed_courses, $scheduleInfo);
 
-  $c->render(json => $c->req->body);
+  $schedule = ApplyRules::filter_required_courses(\@courses, \@completed_courses, $schedule);
+
+  $c->render(json => $schedule);
 };
 
 websocket '/news' => sub {

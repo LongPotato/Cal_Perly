@@ -19,11 +19,9 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
 
   ws.onmessage = function (msg) {
     $scope.tweets = JSON.parse(msg.data)["statuses"];
-    console.log($scope.tweets);
   };
 
   $interval(function() {
-    console.log('get tweets');
     ws.send('getTweets');
   }, 30000);
 
@@ -65,7 +63,7 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
 
       $http.post('/schedule', data)
       .then(function(response) {
-        console.log(response);
+        console.log(response.data);
         //$scope.selectPage = false;
       });
     }, 1000);
