@@ -17,10 +17,13 @@
         <nav>
           <ul class="nav nav-pills float-xs-right">
             <li class="nav-item">
-              <a ng-class="{active: !newsPage}" ng-click="newsPage = false; mainPage = true" class="nav-link" href=""><i class="fa fa-calendar" aria-hidden="true"></i> Schedule</a>
+              <a ng-class="{active: mainPage}" ng-click="newsPage = false; mainPage = true; demandPage = false;" class="nav-link" href=""><i class="fa fa-calendar" aria-hidden="true"></i> Schedule</a>
             </li>
             <li class="nav-item">
-              <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false" class="nav-link" href=""><i class="fa fa-twitter" aria-hidden="true"></i> News</a>
+              <a ng-class="{active: demandPage}" ng-click="newsPage = false; mainPage = false; demandPage = true;" class="nav-link" href=""><i class="fa fa-line-chart" aria-hidden="true"></i> On Demand</a>
+            </li>
+            <li class="nav-item">
+              <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false; demandPage = false;" class="nav-link" href=""><i class="fa fa-twitter" aria-hidden="true"></i> News</a>
             </li>
           </ul>
         </nav>
@@ -36,9 +39,22 @@
             </div>
         </div>
 
+        <div class="row" ng-show="welcomePage" ng-cloak>
+          <div class="col-md-12">
+            <div class="jumbotron text-xs-center">
+              <h1 class="display-3">Welcome!</h1>
+              <p class="lead">Cal Perly helps you find your class schedule, see on demand classes, campus news.</p>
+              <p class="lead">All in one place!</p>
+              <p class="lead">
+                <a class="btn btn-primary btn-lg" href="" ng-click="start()" role="button">Get started</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div class="row animated" ng-show="selectPage" ng-class="{fadeOut: fadeOut == true}" ng-cloak>
           <div ng-class="{fadeIn: selectPage == true}" class="col-md-12 animated">
-            <p class="text-muted" style="margin-bottom: 1.5rem">Select your completed courses:</p>
+            <p class="lead" style="margin-bottom: 1.5rem">Select your completed courses:</p>
           </div>
 
           <div ng-class="{fadeIn: selectPage == true}" class="col-md-6 animated">
@@ -72,7 +88,7 @@
 
         <div class="row animated" ng-show="schedulePage" ng-class="{fadeIn: fadeIn == true}" ng-cloak>
           <div class="col-md-12">
-            <p class="text-muted" style="margin-bottom: 1.5rem">Showing classes for Spring 2017:</p>
+            <p class="lead" style="margin-bottom: 1.5rem">Showing classes for Spring 2017:</p>
           </div>
 
           <div class="col-md-12">
@@ -112,7 +128,7 @@
           </div>
         </div>
 
-      </div>
+        </div>
       </div> <!-- Main page -->
 
       <div class="row animated" ng-show="newsPage" ng-class="{zoomInUp: newsPage == true}" ng-cloak>
@@ -137,11 +153,9 @@
         </div>
       </div>
 
-      <div class="row">
-        <footer class="footer">
-          <p>&copy; CS408 - 2016 </p>
-        </footer>
-      </div>
+      <footer class="footer">
+        <p>&copy; CS408 - 2016 </p>
+      </footer>
     </div> <!--Container-->
   </body>
 

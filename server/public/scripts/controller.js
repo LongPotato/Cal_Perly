@@ -1,9 +1,11 @@
 app.controller('Controller', function($scope, $http, $timeout, $interval) {
   $scope.mainPage = true;
+  $scope.welcomePage = true;
   $scope.selectPage = false;
   $scope.schedulePage = false;
+  $scope.demandPage = false;
   $scope.newsPage = false;
-  $scope.loading = true;
+  $scope.loading = false;
   $scope.fadeIn = false;
   $scope.fadeOut = false;
 
@@ -30,13 +32,17 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
     ws.send('getTweets');
   }, 30000);
 
-  $http.get('/courses')
-  .then(function(response) {
-    $scope.courses = JSON.parse(response.data)["courses"];
-    $scope.loading = false;
-    $scope.mainPage = true;
-    $scope.selectPage = true;
-  });
+  $scope.start = function() {
+    $scope.welcomePage = false;
+    $scope.loading = true;
+    $http.get('/courses')
+    .then(function(response) {
+      $scope.courses = JSON.parse(response.data)["courses"];
+      $scope.loading = false;
+      $scope.mainPage = true;
+      $scope.selectPage = true;
+    });
+  };
 
   $scope.selectCourse = function(course) {
     var contain = false;
