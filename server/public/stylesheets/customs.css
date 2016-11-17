@@ -77,6 +77,17 @@ body {
     margin: 15px;
 }
 
+.deckgrid .column-1-1 {
+    width: 95%;
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 480px){
+    .deckgrid[deckgrid]::before {
+        content: '1 .column.column-1-1';
+    }
+}
+
 .tweet-link {
   color: black !important;
   text-decoration: none !important;

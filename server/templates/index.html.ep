@@ -17,10 +17,10 @@
         <nav>
           <ul class="nav nav-pills float-xs-right">
             <li class="nav-item">
-              <a ng-class="{active: !newsPage}" ng-click="newsPage = false; mainPage = true" class="nav-link" href="">Schedule</a>
+              <a ng-class="{active: !newsPage}" ng-click="newsPage = false; mainPage = true" class="nav-link" href=""><i class="fa fa-calendar" aria-hidden="true"></i> Schedule</a>
             </li>
             <li class="nav-item">
-              <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false" class="nav-link" href="">News</a>
+              <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false" class="nav-link" href=""><i class="fa fa-twitter" aria-hidden="true"></i> News</a>
             </li>
           </ul>
         </nav>
@@ -117,7 +117,7 @@
 
       <div class="row animated" ng-show="newsPage" ng-class="{zoomInUp: newsPage == true}" ng-cloak>
         <div deckgrid class="deckgrid" source="tweets">
-          <div class="card" ng-class="{true:'card-outline-success',false:'card-outline-info'}[card.user.name == 'Cal Poly Pomona']">
+          <div class="card" ng-class="{true:'card-outline-success',false:'card-outline-secondary'}[card.user.name == 'Cal Poly Pomona']">
             <a class="tweet-link" target="_blank" ng-href="https://twitter.com/statuses/{{card.id_str}}">
               <img ng-show="card.entities.hasOwnProperty('media')"
                 class="card-img-top img-fluid" ng-src="{{card.entities.media[0].media_url}}"
