@@ -72,7 +72,7 @@
 
         <div class="row animated" ng-show="schedulePage" ng-class="{fadeIn: fadeIn == true}" ng-cloak>
           <div class="col-md-12">
-            <p class="text-muted" style="margin-bottom: 1.5rem">Showing classes for Winter 2017:</p>
+            <p class="text-muted" style="margin-bottom: 1.5rem">Showing classes for Spring 2017:</p>
           </div>
 
           <div class="col-md-12">
