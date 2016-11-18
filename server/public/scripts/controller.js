@@ -11,21 +11,43 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
 
   $scope.courses = [];
   $scope.suggests = {};
+  $scope.ranking = [];
 
   var ws = new WebSocket(SOCKET);
+  var ws2 = new WebSocket(SOCKET2);
   var selectedCourses = [];
 
   ws.onopen = function () {
     ws.send('getTweets');
   };
 
+  ws2.onopen = function () {
+    ws2.send('getDemand');
+  };
+
   ws.onclose = function () {
-    console.log('wake');
     ws.send('wake');
   };
 
   ws.onmessage = function (msg) {
     $scope.tweets = JSON.parse(msg.data)["statuses"];
+  };
+
+  ws2.onmessage = function (msg) {
+    var demand = JSON.parse(msg.data);
+    $scope.ranking = [];
+
+    for (var course in demand) {
+      if (demand[course] > 1) {
+        $scope.ranking.push([course, demand[course]]);
+      }
+    }
+    $scope.ranking.sort(
+      function(a, b) {
+        return b[1] - a[1];
+      }
+    );
+    $scope.ranking = $scope.ranking.slice(0, 5);
   };
 
   $interval(function() {
@@ -76,15 +98,7 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
 
       $http.post('/schedule', data)
       .then(function(response) {
-        var schedule = response.data;
-
-        for (var section in schedule) {
-          if ($scope.suggests[schedule[section]['Course']] == null) {
-            $scope.suggests[schedule[section]['Course']] = [];
-          }
-          $scope.suggests[schedule[section]['Course']].push(schedule[section]);
-        }
-
+        $scope.suggests = response.data;
         $scope.loading = false;
         $scope.schedulePage = true;
         $scope.fadeIn = true;
@@ -100,4 +114,10 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
     $scope.selectPage = true;
   };
 
+  $scope.openDemand = function() {
+    $scope.demandPage = true;
+    $scope.mainPage = false;
+    $scope.newsPage = false;
+    ws2.send('getDemand');
+  }
 });

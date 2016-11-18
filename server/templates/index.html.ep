@@ -20,7 +20,7 @@
               <a ng-class="{active: mainPage}" ng-click="newsPage = false; mainPage = true; demandPage = false;" class="nav-link" href=""><i class="fa fa-calendar" aria-hidden="true"></i> Schedule</a>
             </li>
             <li class="nav-item">
-              <a ng-class="{active: demandPage}" ng-click="newsPage = false; mainPage = false; demandPage = true;" class="nav-link" href=""><i class="fa fa-line-chart" aria-hidden="true"></i> On Demand</a>
+              <a ng-class="{active: demandPage}" ng-click="openDemand()" class="nav-link" href=""><i class="fa fa-line-chart" aria-hidden="true"></i> Impacted classes</a>
             </li>
             <li class="nav-item">
               <a ng-class="{active: newsPage}" ng-click="newsPage = true; mainPage = false; demandPage = false;" class="nav-link" href=""><i class="fa fa-twitter" aria-hidden="true"></i> News</a>
@@ -42,11 +42,11 @@
         <div class="row" ng-show="welcomePage" ng-cloak>
           <div class="col-md-12">
             <div class="jumbotron text-xs-center">
-              <h1 class="display-3">Welcome!</h1>
-              <p class="lead">Cal Perly helps you find your class schedule, see on demand classes, campus news.</p>
+              <h1 class="display-3" id="welcome">Welcome!</h1>
+              <p class="lead">Cal Perly helps you find your class schedule, see impacted classes, read campus news.</p>
               <p class="lead">All in one place!</p>
               <p class="lead">
-                <a class="btn btn-primary btn-lg" href="" ng-click="start()" role="button">Get started</a>
+                <a class="btn btn-outline-primary btn-lg" href="" ng-click="start()" role="button">Get started</a>
               </p>
             </div>
           </div>
@@ -102,17 +102,17 @@
                         <th>Date</th>
                         <th>Instructor</th>
                         <th>Room</th>
-                        <th>Class Nbr</th>
+                        <th class="text-nowrap">Class Nbr</th>
                         <th>Capacity</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr ng-repeat="index in course">
-                        <td>{{index['Time']}}</td>
-                        <td>{{index['Instructor']}}</td>
-                        <td>{{index['Building/Room']}}</td>
-                        <td>{{index['Class Nbr']}}</td>
-                        <td>{{index['Capacity']}}</td>
+                        <td class="text-nowrap">{{index['Time']}}</td>
+                        <td class="text-nowrap">{{index['Instructor']}}</td>
+                        <td class="text-nowrap">{{index['Building/Room']}}</td>
+                        <td class="text-nowrap">{{index['Class Nbr']}}</td>
+                        <td class="text-nowrap">{{index['Capacity']}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -121,15 +121,34 @@
             </div>
           </div>
 
-          <div class="col-md-12">
+          <div class="col-md-12" role="group">
             <button type="button" class="btn btn-outline-primary btn-lg btn-block" ng-click="searchAgain()">
-              <i class="fa fa-search" aria-hidden="true"></i> <strong>Search again</strong>
+              <i class="fa fa-arrow-left" aria-hidden="true"></i> <strong>Search again</strong>
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-lg btn-block" ng-click="openDemand()">
+              <strong>See impacted classes</strong> <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
           </div>
         </div>
 
         </div>
       </div> <!-- Main page -->
+
+      <div class="row animated" ng-show="demandPage" ng-class="{fadeIn: demandPage == true}" ng-cloak>
+        <div class="col-md-12">
+          <p class="lead text-xs-center" style="margin-bottom: 1.5rem">The following classes are going to be impacted for Spring 2017:</p>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <tbody>
+                <tr ng-repeat="course in ranking">
+                  <td class="text-nowrap text-xs-right lead"><strong>{{course[0]}}</strong></td>
+                  <td class="text-nowrap text-xs-center lead text-danger">{{course[1]}} <small>students need this class</small></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
       <div class="row animated" ng-show="newsPage" ng-class="{zoomInUp: newsPage == true}" ng-cloak>
         <div deckgrid class="deckgrid" source="tweets">
@@ -160,6 +179,7 @@
   </body>
 
   <script>var SOCKET = '<%= url_for('news')->to_abs %>'</script>
+  <script>var SOCKET2 = '<%= url_for('demand')->to_abs %>'</script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>

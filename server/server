@@ -22,9 +22,11 @@ my $sth = $dbh->prepare('SELECT * FROM Courses');
 $sth->execute;
 my $arr = $sth->fetchall_arrayref;
 my @courses = ();
+my $demand = ();
 
 foreach my $row (@$arr) {
   push(@courses, {title => $row->[1], name => $row->[2], type => $row->[3]});
+  $demand->{$row->[1]} = 0;
 }
 
 get '/' => sub {
@@ -43,10 +45,39 @@ post '/schedule' => sub {
   my $c = shift;
   my @completed_courses = decode_json($c->req->body);
   my $schedule = CompareSch::compareSchedule(\@completed_courses, $scheduleInfo);
+  my $organized = ();
 
   $schedule = ApplyRules::filter_required_courses(\@courses, \@completed_courses, $schedule);
 
-  $c->render(json => $schedule);
+  foreach my $key (keys %$schedule) {
+    if (!exists($organized->{$schedule->{$key}->{'Course'}})) {
+      my @array = ();
+      $organized->{$schedule->{$key}->{'Course'}} = \@array;
+    }
+    push($organized->{$schedule->{$key}->{'Course'}}, $schedule->{$key});
+  }
+
+  # For each class that user has remaining
+  # Increase demand for that class by 1
+  foreach my $key (keys %$organized) {
+    if (exists($organized->{$key})) {
+      $demand->{$key} += 1;
+    }
+  }
+
+  $c->render(json => $organized);
+};
+
+websocket '/demand' => sub {
+  my $self = shift;
+  $self = $self->inactivity_timeout(3600);
+
+  $self->on(message => sub {
+    my ($self, $message) = @_;
+    if ($message eq 'getDemand') {
+      $self->send(encode_json($demand));
+    }
+  });
 };
 
 websocket '/news' => sub {

@@ -35,6 +35,10 @@ body {
   background-color: white !important;
 }
 
+#welcome {
+  color: #006f3b !important;
+}
+
 @media (min-width: 60em) {
   .container {
     max-width: 60rem;
