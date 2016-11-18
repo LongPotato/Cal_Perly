@@ -54,6 +54,10 @@ app.controller('Controller', function($scope, $http, $timeout, $interval) {
     ws.send('getTweets');
   }, 30000);
 
+  $interval(function() {
+    ws2.send('getDemand');
+  }, 5000);
+
   $scope.start = function() {
     $scope.welcomePage = false;
     $scope.loading = true;
