@@ -26,7 +26,7 @@ my $demand = ();
 
 foreach my $row (@$arr) {
   push(@courses, {title => $row->[1], name => $row->[2], type => $row->[3]});
-  $demand->{$row->[1]} = 0;
+  $demand->{$row->[1]} = 50;
 }
 
 get '/' => sub {
