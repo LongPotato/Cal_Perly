@@ -1,6 +1,6 @@
 # Cal Perly
 
-Cal Perly provides students at Cal Pomona Pomona a quick access to class schedule, class information and an easy way to read the news around the campus.
+Cal Perly provides students at Cal Poly Pomona a quick access to class schedule, class information and an easy way to read the news around the campus.
 
 Visit it at [calperly.tk](http://35.161.75.220:3000)
 
